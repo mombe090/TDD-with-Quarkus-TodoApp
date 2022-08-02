@@ -69,7 +69,8 @@ jobs:
           #docker build . --file src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }}
           ls -laht .
           ls target
-          docker build -f src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }} .
+          docker context ls
+          docker build -f src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }} src/main/docker/
           
     - name: Login to dockerhub container registry
       run: echo "${{ secrets.docker_hub_token }}" | docker login -u ${{ secrets.docker_hub_user }} --password-stdin
