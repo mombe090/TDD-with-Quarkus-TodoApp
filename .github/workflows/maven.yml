@@ -60,6 +60,9 @@ jobs:
       with:
         name: artefacts
         path: ./
+    - name: Setup branch name
+      run: |
+        echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
 
     - name: Unzip and extract the artefacts
       run: |
