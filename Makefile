@@ -9,5 +9,3 @@ build_app:
 
 run_using_docker:
 	docker run -i -d --rm -p 9090:8080 mombe090/todoapp-tdd:1.0.0
-
-essaie:
