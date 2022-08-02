@@ -37,3 +37,38 @@ jobs:
     
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+  
+  build-and-push-docker-image:
+    needs: build-and-package-app
+    
+    runs-on: ubuntu-latest
+    env:
+      FRAMEWORK: quarkus
+      APP_NAME: todo-backend-quarkusapp
+    steps:
+    - name: Build Docker Image
+      run: |
+          docker build . --file Dockerfile --tag ${{ env.APP_NAME }}
+          
+    - name: Login to dockerhub container registry
+      run: echo "${{ secrets.docker_hub_token }}" | docker login -u ${{ secrets.docker_hub_user }} --password-stdin
+
+    - name: Push image
+      run: |
+          IMAGE_ID=${{ secrets.docker_hub_user }}/$SERVICE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          
+          echo "push version ${{steps.getPomVersion.outputs.info}}"
+          
+          VERSION=$BRANCH_NAME
+          
+          echo IMAGE_ID=$IMAGE_ID
+          
+          echo VERSION=$VERSION
+          
+          docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
+          
+          docker push $IMAGE_ID:$VERSION
+          
