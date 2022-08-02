@@ -1,14 +1,10 @@
+variables:
+  APP_NAME: todo-backend-quarkusapp
+
 build_test_and_package_app:
-  variables:
-    MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  cache:
-    paths:
-      - .m2/repository/
-      - target/
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn $MAVEN_CLI_OPTS install
+    - mvn clean install
 
 build_docker_image:
   needs:
@@ -19,4 +15,4 @@ build_docker_image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
-    - make build_app
+    - docker build -f src/main/docker/Dockerfile.jvm -t $REGISTRY_USER/$APP_NAME .
