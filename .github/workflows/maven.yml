@@ -62,7 +62,7 @@ jobs:
         path: ./
 
     - name: Unzip and extract the artefacts
-      run: unzip artefacts.zip -d target
+      run: unzip artefacts.zip
 
     - name: Build Docker Image
       run: |
