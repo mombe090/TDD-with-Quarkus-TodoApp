@@ -1,6 +1,16 @@
-build_test_and_package:
+build_test_and_package_app:
   image: azul/zulu-openjdk:17
   before_script:
   - apt update -y && apt install make -y
   script:
     - make package_app
+
+
+build_docker_image:
+  image: 20.10.17-cli
+  before_script:
+    - apt update -y && apt install make -y
+  services:
+    - 20.10.17-dind
+  script:
+    - make build_app
