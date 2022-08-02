@@ -1,6 +1,6 @@
 build_test_and_package:
   image: azul/zulu-openjdk:17
   before_script:
-  - apt install update -y && apt install make -y
+  - apt update -y && apt install make -y
   script:
     - make package_app
