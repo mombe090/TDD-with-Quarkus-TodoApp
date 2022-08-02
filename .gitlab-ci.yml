@@ -23,4 +23,3 @@ package:
   stage: package
   script:
     - mvn $MAVEN_CLI_OPTS package
-
