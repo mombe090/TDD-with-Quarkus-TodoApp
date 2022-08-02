@@ -83,7 +83,7 @@ RUN mkdir /tmp/build/
 # Add context to /tmp/build/
 COPY . /tmp/build/
 
-RUN ls /tmp/build/
+RUN ls /tmp/build/target
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=185 ./target/quarkus-app/lib/ /deployments/lib/
