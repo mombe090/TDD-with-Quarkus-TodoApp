@@ -44,7 +44,7 @@ jobs:
     - name: Upload the artefacts
       uses: actions/upload-artifact@v1
       with:
-        name: release
+        name: artefacts
         path: ./artefacts.zip
   
   build-and-push-docker-image:
