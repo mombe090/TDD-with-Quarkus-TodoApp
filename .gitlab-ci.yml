@@ -15,4 +15,6 @@ build_docker_image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
+    - echo $REGISTRY_USER
+    - echo $APP_NAME
     - docker build -f src/main/docker/Dockerfile.jvm -t $REGISTRY_USER/$APP_NAME .
