@@ -81,7 +81,8 @@ jobs:
           
           echo "push version ${{steps.getPomVersion.outputs.info}}"
           
-          VERSION=$BRANCH_NAME
+          #VERSION=$BRANCH_NAME
+          VERSION="${BRANCH_NAME:0:8}"
           
           echo IMAGE_ID=$IMAGE_ID
           
