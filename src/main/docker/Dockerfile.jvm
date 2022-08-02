@@ -84,10 +84,10 @@ WORKDIR /app
 COPY . /tmp/build/
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
-RUN --chown=185 /tmp/build/target/quarkus-app/lib/ /deployments/lib/
-RUN --chown=185 /tmp/build/target/quarkus-app/*.jar /deployments/
-RUN --chown=185 /tmp/build/target/quarkus-app/app/ /deployments/app/
-RUN --chown=185 /tmp/build/target/quarkus-app/quarkus/ /deployments/quarkus/
+RUN cp --chown=185 /tmp/build/target/quarkus-app/lib/ /deployments/lib/
+RUN cp --chown=185 /tmp/build/target/quarkus-app/*.jar /deployments/
+RUN cp --chown=185 /tmp/build/target/quarkus-app/app/ /deployments/app/
+RUN cp --chown=185 /tmp/build/target/quarkus-app/quarkus/ /deployments/quarkus/
 
 EXPOSE 8080
 USER 185
