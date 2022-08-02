@@ -7,9 +7,9 @@ build_test_and_package_app:
 
 
 build_docker_image:
+  needs:
+  - build_test_and_package_app
   image: docker:20.10.17-cli
-  before_script:
-    - apt update -y && apt install make -y
   services:
     - docker:20.10.17-dind
   variables:
