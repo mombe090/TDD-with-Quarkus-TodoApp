@@ -49,6 +49,7 @@ jobs:
   
   build-and-push-docker-image:
     needs: build-and-package-app
+
     
     runs-on: ubuntu-latest
     env:
