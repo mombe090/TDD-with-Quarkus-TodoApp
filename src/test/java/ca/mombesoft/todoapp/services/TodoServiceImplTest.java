@@ -8,16 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import ca.mombesoft.todoapp.model.Todo;
+import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class TodoServiceImplTest {
-    //@InjectMocks
+    @Inject
     TodoService todoServiceMock;
+
 
     @BeforeEach
     public void setUp() {
@@ -43,16 +46,21 @@ public class TodoServiceImplTest {
 
     @Test
     void getTodo() {
+        Mockito.when(todoServiceMock.getTodo(10000)).thenReturn(
+                Todo.builder().id(0).title(null).description(null).completed(false).build()
+        );
+
         assertAll(
                 () -> assertEquals(1, todoServiceMock.getTodo(1).getId()),
                 () -> assertEquals("Learn Quarkus", todoServiceMock.getTodo(1).getTitle()),
                 () -> assertEquals("Target befor december", todoServiceMock.getTodo(1).getDescription())
         );
-    }
 
-    @Test
-    void getTodos() {
-        assert(todoServiceMock.getTodos().size() >= 2);
+        assertAll(
+                () -> assertEquals(0, todoServiceMock.getTodo(10000).getId()),
+                () -> assertNull(todoServiceMock.getTodo(10000).getTitle()),
+                () -> assertNull(todoServiceMock.getTodo(10000).getDescription())
+        );
     }
 
     @Test
@@ -74,17 +82,29 @@ public class TodoServiceImplTest {
 
     @Test
     void updateTodo() {
-        Mockito.when(todoServiceMock.updateTodo(this.todoServiceMock.getTodo(1)))
-                .thenReturn(Todo.builder().id(1).title("Learn Quarkus").build());
+        Mockito.when(todoServiceMock.getTodo(10000)).thenReturn(
+                Todo.builder().id(0).title(null).description(null).completed(false).build()
+        );
+
+        Mockito.when(todoServiceMock.updateTodo(Todo.builder().id(10000).build())).thenReturn(
+                Todo.builder().id(0).title(null).description(null).completed(false).build()
+        );
         ;
 
         assertEquals("Learn Quarkus", this.todoServiceMock.getTodo(1).getTitle());
+
+        assertNull(this.todoServiceMock.updateTodo(Todo.builder().id(10000).build()).getTitle());
     }
 
     @Test
     void deleteTodo() {
         Mockito.when(todoServiceMock.deleteTodo(3))
                 .thenReturn(true);
+
+        Mockito.when(todoServiceMock.deleteTodo(10000))
+                .thenReturn(false);
+
         assertTrue(todoServiceMock.deleteTodo(3));
+        assertFalse(todoServiceMock.deleteTodo(10000));
     }
 }

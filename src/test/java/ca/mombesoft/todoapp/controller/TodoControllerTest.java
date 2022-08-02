@@ -21,12 +21,6 @@ public class TodoControllerTest {
 
     @BeforeEach
     void setUp() {
-        List<Todo> todos = List.of(
-                Todo.builder().id(1).title("Learn Quarkus").description("Target befor december").completed(false).build(),
-                Todo.builder().id(2).title("Be istio excellent").description("you have one year to do that").completed(false).build(),
-                Todo.builder().id(3).title("Relearn java 11").description("yes relearn it from scratch").completed(false).build()
-        );
-        // Mockito.when()
     }
 
     @Test
@@ -119,6 +113,11 @@ public class TodoControllerTest {
                 .body(
                         "completed", is(true)
                 );
+
+        given()
+                .when().delete(todoUrl + "/1000")
+                .then()
+                .statusCode(404);
     }
 
     @Test
@@ -128,7 +127,7 @@ public class TodoControllerTest {
         given()
                 .header("Content-Type", "application/json")
                 .body(todo)
-                .when().put(todoUrl + "/1")
+                .when().put(todoUrl )
                 .then()
                 .statusCode(204);
 
@@ -142,5 +141,13 @@ public class TodoControllerTest {
                         "description", is("Target befor december"),
                         "completed", is(false)
                 );
+
+        given()
+                .header("Content-Type", "application/json")
+                .body(Todo.builder().id(10).title("").description("").build())
+                .when().put(todoUrl)
+                .then()
+                .statusCode(404);
+
     }
 }

@@ -11,9 +11,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
 import ca.mombesoft.todoapp.model.Todo;
 import ca.mombesoft.todoapp.services.TodoServiceImpl;
 
+@Produces("application/json")
+@Consumes("application/json")
 @Path("/todos")
 public class TodoController {
     @Inject
