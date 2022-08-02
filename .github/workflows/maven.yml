@@ -37,6 +37,15 @@ jobs:
     
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Zip the target folder
+      run:  find target/quarkus-app -maxdepth 1 -type d -exec zip artefacts.zip {} +
+
+    - name: Upload the artefacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: release
+        path: ./artefacts.zip
   
   build-and-push-docker-image:
     needs: build-and-package-app
@@ -46,9 +55,19 @@ jobs:
       FRAMEWORK: quarkus
       APP_NAME: todo-backend-quarkusapp
     steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v1
+      with:
+        name: artefacts
+        path: ./
+
+    - name: Unzip and extract the artefacts
+      run: unzip -uj "artefacts.zip" "*" -d "./"
+
     - name: Build Docker Image
       run: |
           #docker build . --file src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }}
+          ls -laht 
           docker build -f src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }} .
           
     - name: Login to dockerhub container registry
