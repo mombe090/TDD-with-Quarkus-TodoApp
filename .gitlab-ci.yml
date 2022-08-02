@@ -7,10 +7,12 @@ build_test_and_package_app:
 
 
 build_docker_image:
-  image: 20.10.17-cli
+  image: docker:20.10.17-cli
   before_script:
     - apt update -y && apt install make -y
   services:
-    - 20.10.17-dind
+    - docker:20.10.17-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
   script:
     - make build_app
