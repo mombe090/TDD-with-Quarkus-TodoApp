@@ -72,6 +72,12 @@ jobs:
       run: |
           docker build . --file src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }}
 
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: '${{ env.APP_NAME }}'
+        trivy-config: trivy.yaml
+
     - name: Login to dockerhub container registry
       run: echo "${{ secrets.docker_hub_token }}" | docker login -u ${{ secrets.docker_hub_user }} --password-stdin
 
