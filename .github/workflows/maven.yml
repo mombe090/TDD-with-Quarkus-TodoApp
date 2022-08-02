@@ -39,7 +39,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Zip the target folder
-      run:  find target/quarkus-app -maxdepth 1 -type d -exec zip artefacts.zip {} +
+      run:  find target -maxdepth 1 -type d -exec zip artefacts.zip {} +
 
     - name: Upload the artefacts
       uses: actions/upload-artifact@v1
@@ -62,7 +62,7 @@ jobs:
         path: ./
 
     - name: Unzip and extract the artefacts
-      run: unzip -uj "artefacts.zip" "*" -d "./"
+      run: unzip artefacts.zip -d target
 
     - name: Build Docker Image
       run: |
