@@ -68,6 +68,7 @@ jobs:
       run: |
           #docker build . --file src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }}
           ls -laht .
+          ls target
           docker build -f src/main/docker/Dockerfile.jvm --tag ${{ env.APP_NAME }} .
           
     - name: Login to dockerhub container registry
