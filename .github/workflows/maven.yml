@@ -39,7 +39,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Zip the target folder
-      run:  find -name '*.jar' -executable -type f  -exec zip release.zip {} +
+      run:  find -name '*.jar' -executable -type f  -exec zip artefacts.zip {} +
 
     - name: Upload the artefacts
       uses: actions/upload-artifact@v1
