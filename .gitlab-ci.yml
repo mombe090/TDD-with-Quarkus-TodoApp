@@ -29,10 +29,8 @@ build_docker_image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - echo ${REGISTRY_USER}
-    - echo ${REGISTRY_TOKEN}
     - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN}
   script:
-    - echo $REGISTRY_USER
-    - echo $APP_NAME
-    - docker build -f src/main/docker/Dockerfile.jvm -t mombe090/$APP_NAME .
+    - docker build -f src/main/docker/Dockerfile.jvm -t ${APP_NAME} .
+    - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}
+    - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:latest
