@@ -14,8 +14,6 @@ build_test_and_package_app:
       - target
     expire_in: 1 days
   before_script:
-    - curl https://github.com/aquasecurity/trivy/releases/download/v0.30.4/trivy_0.30.4_Linux-64bit.tar.gz --output trivy.tar.gz
-    - ls -la
     - echo ${CI_COMMIT_BRANCH}
   script:
     - mvn clean install
@@ -29,8 +27,9 @@ build_docker_image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - curl https://github.com/aquasecurity/trivy/releases/download/v0.30.4/trivy_0.30.4_Linux-64bit.tar.gz --output trivy.tar.gz
-    - ls -la
+    - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.17.0
+    - trivy
+
     - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN}
   script:
     - docker build -f src/main/docker/Dockerfile.jvm -t ${APP_NAME} .
