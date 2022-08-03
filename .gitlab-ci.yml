@@ -34,6 +34,6 @@ build_docker_image:
     - trivy image ${APP_NAME}
     - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN}
     - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}
-    - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:lgit atest
+    - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:latest
     - docker push ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}
     - docker push ${REGISTRY_USER}/${APP_NAME}:latest
