@@ -1,8 +1,6 @@
 variables:
   APP_NAME: todo-backend-quarkusapp
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-  REGISTRY_USER: $REGISTRY_USER
-  REGISTRY_TOKEN: $REGISTRY_TOKEN
 
 cache:
   paths:
