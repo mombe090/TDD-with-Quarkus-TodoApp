@@ -29,10 +29,9 @@ build_docker_image:
   before_script:
     - apk update && apk --no-cache add curl
     - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.17.0
-    - trivy
-
-    - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN}
   script:
     - docker build -f src/main/docker/Dockerfile.jvm -t ${APP_NAME} .
+    - trivy image ${APP_NAME}
+    - docker login -u ${REGISTRY_USER} -p ${REGISTRY_TOKEN}
     - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}
     - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:latest
