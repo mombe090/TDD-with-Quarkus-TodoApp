@@ -8,12 +8,16 @@ cache:
 
 build_test_and_package_app:
   image: maven:3.8.5-openjdk-17
+  artifacts:
+    untracked: true
   script:
     - mvn clean install
 
 build_docker_image:
   needs:
   - build_test_and_package_app
+  dependencies:
+    - build_test_and_package_app
   image: docker:20.10.17-cli
   services:
     - docker:20.10.17-dind
