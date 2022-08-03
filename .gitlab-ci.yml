@@ -10,6 +10,11 @@ build_test_and_package_app:
   image: maven:3.8.5-openjdk-17
   artifacts:
     untracked: true
+    paths:
+      - target
+    expire_in: 1 days
+  before_script:
+    - echo ${CI_COMMIT_BRANCH}
   script:
     - mvn clean install
 
