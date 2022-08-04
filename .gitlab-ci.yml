@@ -6,7 +6,13 @@ cache:
   paths:
     - .m2/repository
 
+stages:
+  - build
+  - deploy
+
+
 build_test_and_package_app:
+  stage: build
   image: maven:3.8.5-openjdk-17
   artifacts:
     untracked: true
@@ -19,6 +25,7 @@ build_test_and_package_app:
     - mvn clean install
 
 build_docker_image:
+  stage: build
   needs:
   - build_test_and_package_app
   image: docker:20.10.17-cli
@@ -37,3 +44,14 @@ build_docker_image:
     - docker tag ${APP_NAME} ${REGISTRY_USER}/${APP_NAME}:latest
     - docker push ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}
     - docker push ${REGISTRY_USER}/${APP_NAME}:latest
+
+deploy_app_on_docker:
+  stage: deploy
+  before_script:
+  - chmod 400 $PEM_FILE
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY centos@$IP "
+      docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN &&
+      docker ps -aq | xargs docker stop | xargs docker rm &&
+      docker run -d -p 8080:8080 ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}"
+

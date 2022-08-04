@@ -1,0 +1,3 @@
+- hosts: instances
+  roles:
+    - docker
