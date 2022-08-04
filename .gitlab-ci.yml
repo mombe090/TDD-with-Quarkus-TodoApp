@@ -52,6 +52,7 @@ deploy_app_on_docker:
   script:
     - ssh -o StrictHostKeyChecking=no -i $PEM_FILE centos@$IP "
       docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN &&
+      docker run -d -p 8080:8080 ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH} &&
       docker ps -aq | xargs docker stop | xargs docker rm &&
       docker run -d -p 8080:8080 ${REGISTRY_USER}/${APP_NAME}:${CI_COMMIT_BRANCH}"
 
