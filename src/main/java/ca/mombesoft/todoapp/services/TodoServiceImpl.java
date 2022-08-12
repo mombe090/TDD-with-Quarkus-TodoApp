@@ -10,16 +10,17 @@ import ca.mombesoft.todoapp.model.Todo;
 
 @ApplicationScoped
 public class TodoServiceImpl implements TodoService {
+
     List<Todo> todos = Stream.of(
             Todo.builder().id(1).title("Learn Quarkus").description("Target befor december").build(),
             Todo.builder().id(2).title("Be istio excellent").description("you have one year to do that").build()
     ).collect(Collectors.toList());
 
-
     @Override public Todo getTodo(int id) {
         if (todos.stream().anyMatch(todo -> todo.getId() == id)) {
             return todos.stream().filter(todo -> todo.getId() == id).findFirst().get();
-        } else {
+        }
+        else {
             return Todo.builder().id(0).build();
         }
     }
@@ -47,7 +48,8 @@ public class TodoServiceImpl implements TodoService {
                         t.setCompleted(todo.isCompleted());
                     });
             return this.todos.stream().filter(t -> todo.getId() == t.getId()).findFirst().get();
-        } else {
+        }
+        else {
             return Todo.builder().id(0).build();
         }
     }
